@@ -6,6 +6,8 @@ from .models import Car
 from cars import serializers
 
 
+
+
 @api_view(['GET', 'POST'])
 def cars_list(request):
 
@@ -21,5 +23,17 @@ def cars_list(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+
+@api_view(['GET'])
+def car_detail(request, pk):
+    try:
+        car = Car.objects.get(pk=pk)
+        serializer = CarSerializer(car);
+        return Response(serializer.data)
+        
+    except Car.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
 
 
